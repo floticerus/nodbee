@@ -1,0 +1,14 @@
+{
+  "name": "users",
+
+  "collection":
+  [
+    {
+    	"_id": "0",
+
+        "username": "admin",
+
+        "password": "password"
+    }
+  ]
+}

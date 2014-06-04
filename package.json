@@ -1,0 +1,26 @@
+{
+  "name": "nodebee",
+  "version": "0.0.1",
+  "description": "nodebee\r =======",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kvonflotow/nodebee.git"
+  },
+  "author": "kevin von flotow",
+  "license": "n/a",
+  "bugs": {
+    "url": "https://github.com/kvonflotow/nodebee/issues"
+  },
+  "homepage": "https://github.com/kvonflotow/nodebee",
+  "dependencies": {
+    "file-encryptor": "0.1.0"
+  },
+  "engines": {
+    "node": "0.10.x"
+  }
+}

@@ -6,47 +6,7 @@
  */
 ( function ()
 	{
-		var PATH = require( 'path' )
-
-		// load net module for tcp server
-		var NET = require( 'net' )
-
-		// require index from lib directory
-		var LIB = require( PATH.join( __dirname, 'lib' ) )
-
-		// reference Socket class
-		var Socket = LIB.Socket
-
-		// default PORT is 2324 - can overwrite with command line
-		var PORT = 2324
-
-		// set custom PORT from command line
-		if ( process.argv.length > 2 )
-		{
-			// use the first argument
-			PORT = process.argv[ 2 ]
-		}
-
-		// create tcp server
-		var server = NET.createServer(
-			{
-				allowHalfOpen: true
-			}
-		)
-
-		// listen for connections
-		server.on( 'connection', function ( socket )
-			{
-				new Socket( socket )
-			}
-		)
-
-		// bind server to PORT
-		server.listen( PORT, function ()
-			{
-				// server is bound
-				console.log( 'nodebee server listening on port ' + PORT )
-			}
-		)
+		// load master or worker module
+		require( require( 'path' ).join( __dirname, require( 'cluster' ).isMaster ? 'master' : 'worker' ) )
 	}
 )()

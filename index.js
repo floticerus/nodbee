@@ -1,8 +1,8 @@
 /** nodebee server module
  *  2014 kevin von flotow
  *
- *  usage: node index.js [PORT]
- *  default PORT is 2324
+ *  usage: node index.js [port]
+ *  default port is 2324
  */
 ( function ()
 	{

@@ -1,4 +1,10 @@
-( function ()
+/** nodebee cluster master
+ *  2014 kevin von flotow
+ *
+ *  forks number of workers equal to number
+ *  of CPUs and reloads them on crash
+ */
+ ( function ()
 	{
 		var CLUSTER = require( 'cluster' )
 		
@@ -11,7 +17,8 @@
 		
 		var NUM_CPUS = OS.cpus().length || 1
 		
-		for ( var i = 0; i < NUM_CPUS; ++i )
+		// lock at 2 threads for now
+		for ( var i = 0; i < 2; ++i )
 		{
 			var worker = CLUSTER.fork()
 			
@@ -19,6 +26,7 @@
 				.on( 'listening', function ( address )
 					{
 						// worker listening
+
 					}
 				)
 				.on( 'exit', function ( code, signal )

@@ -1,18 +1,15 @@
-/** nodebee server module
+/** nodebee cluster worker
  *  2014 kevin von flotow
- *
- *  usage: node index.js [PORT]
- *  default PORT is 2324
  */
 ( function ()
 	{
-		/* var CLUSTER = require( 'cluster' )
+		var CLUSTER = require( 'cluster' )
 		
 		// return if not worker
 		if ( !CLUSTER.isWorker )
 		{
 			return
-		} */
+		}
 		
 		var PATH = require( 'path' )
 
@@ -25,10 +22,10 @@
 		// reference Socket class
 		var Socket = LIB.Socket
 
-		// default PORT is 2324 - can overwrite with command line
+		// default port is 2324 - can overwrite with command line
 		var PORT = 2324
 
-		// set custom PORT from command line
+		// set custom port from command line
 		if ( process.argv.length > 2 )
 		{
 			// use the first argument
@@ -49,11 +46,11 @@
 			}
 		)
 
-		// bind server to PORT
+		// bind server to port
 		server.listen( PORT, function ()
 			{
 				// server is bound
-				console.log( 'nodebee server listening on port ' + PORT )
+				console.log( 'nodebee worker listening on port ' + PORT )
 			}
 		)
 		

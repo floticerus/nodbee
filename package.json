@@ -1,6 +1,6 @@
 {
   "name": "nodebee",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "nodebee\r =======",
   "main": "index.js",
   "scripts": {
@@ -18,7 +18,7 @@
   },
   "homepage": "https://github.com/kvonflotow/nodebee",
   "dependencies": {
-    "file-encryptor": "0.1.0"
+    
   },
   "engines": {
     "node": "0.10.x"

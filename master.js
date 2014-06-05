@@ -14,6 +14,10 @@
         }
         
         var OS = require( 'os' )
+
+        var PATH = require( 'path' )
+
+        var MESSAGES = require( PATH.join( __dirname, 'lib', 'messages' ) )
         
         var NUM_CPUS = OS.cpus().length || 1
         

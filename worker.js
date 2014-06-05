@@ -17,10 +17,12 @@
         var NET = require( 'net' )
 
         // require index from lib directory
-        var LIB = require( PATH.join( __dirname, 'lib' ) )
+        // var LIB = require( PATH.join( __dirname, 'lib' ) )
+
+        var Collection = require( PATH.join( __dirname, 'lib', 'Collection' ) )
 
         // reference Socket class
-        var Socket = LIB.Socket
+        var Socket = require( PATH.join( __dirname, 'lib', 'Socket' ) )
 
         // default port is 2324 - can overwrite with command line
         var PORT = 2324
@@ -51,6 +53,10 @@
             {
                 // server is bound
                 console.log( 'nodebee worker listening on port ' + PORT )
+
+                var col = new Collection( 'testcollection' )
+
+                console.log( col )
             }
         )
         

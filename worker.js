@@ -19,6 +19,8 @@
         // require index from lib directory
         // var LIB = require( PATH.join( __dirname, 'lib' ) )
 
+        var MESSAGES = require( PATH.join( __dirname, 'lib', 'messages' ) )
+
         var Collection = require( PATH.join( __dirname, 'lib', 'constructors', 'Collection' ) )
 
         // reference Socket class
@@ -48,7 +50,12 @@
             }
         )
 
-        console.log( process.env.NBKEY )
+        MESSAGES
+            .on( 'connected', function ()
+                {
+                    console.log( 'CONNEC' )
+                }
+            )
 
         // bind server to port
         server.listen( PORT, function ()

@@ -29,6 +29,32 @@
 
         var Uid = require( PATH.join( __dirname, 'lib', 'constructors', 'Uid' ) )
 
+        // create these directories if they do not exist
+        var REQUIRED_DIRS = [
+            PATH.join( __dirname, 'db' ),
+
+            PATH.join( __dirname, 'db', 'collections' ),
+
+            PATH.join( __dirname, 'db', 'data' ),
+
+            PATH.join( __dirname, 'db', 'links' ),
+
+            PATH.join( __dirname, 'db', 'links', 'collections' ),
+
+            PATH.join( __dirname, 'db', 'links', 'data' )
+        ]
+
+        // make sure required directories are available
+        for ( var i = 0, l = REQUIRED_DIRS.length; i < l; ++i )
+        {
+            if ( !FS.existsSync( REQUIRED_DIRS[ i ] ) )
+            {
+                // path does not exist, create directory
+                // should we change mode? default is 0777 (evil)
+                FS.mkdirSync( REQUIRED_DIRS[ i ] )
+            }
+        }
+
         // WARNING WARNING WARNING!!!!!
         // deleting or changing .nbkey file will
         // make the database unreadable
@@ -50,7 +76,7 @@
             'NBCONFIG': JSON.stringify( NBCONFIG )
         }
 
-        // set for master, too
+        // set process.env for master, too
         for ( var key in workerData )
         {
             process.env[ key ] = workerData[ key ]

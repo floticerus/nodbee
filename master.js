@@ -20,8 +20,6 @@
         var PATH = require( 'path' )
 
         var KEY_DIR = PATH.join( __dirname, '.nbkey' )
-
-        var MESSAGES = require( PATH.join( __dirname, 'lib', 'messages' ) )
         
         var NUM_CPUS = OS.cpus().length || 1
 
@@ -29,11 +27,39 @@
 
         var Uid = require( PATH.join( __dirname, 'lib', 'constructors', 'Uid' ) )
 
-        MESSAGES.on( 'test', function ( obj )
-            {
-                console.log( obj )
-            } 
-        )
+        // WARNING WARNING WARNING!!!!!
+        // deleting or changing this file will make the
+        // database unreadable, and unrecoverable
+
+        // check for .nbkey file
+        // if it doesn't exist, create it
+        if ( !FS.existsSync( KEY_DIR ) )
+        {
+            FS.writeFileSync( KEY_DIR, Uid.gen( 256 ) + '\r\n', 'binary' )
+        }
+
+        var KEY = FS.readFileSync( KEY_DIR, { 'encoding': 'binary' } ).toString().trim()
+        
+        // console.log( KEY )
+
+        // extra data to send to worker
+        // sets in process.env
+        var workerData = {
+            // process.env.NBKEY
+            'NBKEY': KEY,
+
+            'NBCONFIG': JSON.stringify( NBCONFIG )
+        }
+
+        // set for master, too
+        for ( var key in workerData )
+        {
+            process.env[ key ] = workerData[ key ]
+        }
+
+        var MESSAGES = require( PATH.join( __dirname, 'lib', 'messages' ) )
+
+        var Collection = require( PATH.join( __dirname, 'lib', 'constructors', 'Collection' ) )
 
         function forkWorker( data )
         {
@@ -69,19 +95,16 @@
                 )
         }
 
-        // WARNING WARNING WARNING!!!!!
-        // deleting or changing this file will make the
-        // database unreadable, and unrecoverable
+        // console.log( JSON.stringify( NBCONFIG ) )
 
-        // check for .nbkey file
-        // if it doesn't exist, create it
-        if ( !FS.existsSync( KEY_DIR ) )
+        // lock at 2 threads for now
+        for ( var i = 0; i < 2; ++i )
         {
-            FS.writeFileSync( KEY_DIR, Uid.gen( 256 ) + '\r\n', 'binary' )
+            forkWorker( workerData )
         }
-        
+
         // read key from .nbkey file
-        FS.readFile( KEY_DIR,
+        /* FS.readFile( KEY_DIR,
             {
                 'encoding': 'binary'
             },
@@ -103,6 +126,12 @@
                     'NBCONFIG': JSON.stringify( NBCONFIG )
                 }
 
+                // set for master, too
+                for ( var key in workerData )
+                {
+                    process.env[ key ] = workerData[ key ]
+                }
+
                 // console.log( JSON.stringify( NBCONFIG ) )
 
                 // lock at 2 threads for now
@@ -111,6 +140,6 @@
                     forkWorker( workerData )
                 }
             }
-        )
+        ) */
     }
 )()

@@ -51,21 +51,24 @@
         )
 
         MESSAGES
-            .on( 'connected', function ()
+            // wait for connection with message system
+            .on( 'listening', function ()
                 {
-                    console.log( 'CONNEC' )
+                    var col = new Collection( 'testcollection' )
+
+                    var col2 = new Collection( 'something' )
+
+                    // console.log( col )
                 }
             )
 
         // bind server to port
         server.listen( PORT, function ()
             {
+                MESSAGES.emit( 'listening' )
+
                 // server is bound
                 console.log( 'nodebee worker listening on port ' + PORT )
-
-                var col = new Collection( 'testcollection' )
-
-                console.log( col )
             }
         )
         

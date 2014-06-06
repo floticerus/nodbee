@@ -8,6 +8,7 @@
     {
         var CLUSTER = require( 'cluster' )
         
+        // return if not master
         if ( !CLUSTER.isMaster )
         {
             return
@@ -27,33 +28,23 @@
 
         var MESSAGES = require( PATH.join( __dirname, 'lib', 'messages' ) )
 
+        var FILES = require( PATH.join( __dirname, 'lib', 'files' ) )
+
         var Uid = require( PATH.join( __dirname, 'lib', 'constructors', 'Uid' ) )
 
-        // create these directories if they do not exist
-        var REQUIRED_DIRS = [
-            PATH.join( __dirname, 'db' ),
+        // make sure these directories exist before continuing
 
-            PATH.join( __dirname, 'db', 'collections' ),
+        FILES.mkdir( PATH.join( __dirname, 'db' ) )
 
-            PATH.join( __dirname, 'db', 'data' ),
+        FILES.mkdir( PATH.join( __dirname, 'db', 'collections' ) )
 
-            PATH.join( __dirname, 'db', 'links' ),
+        FILES.mkdir( PATH.join( __dirname, 'db', 'data' ) )
 
-            PATH.join( __dirname, 'db', 'links', 'collections' ),
+        FILES.mkdir( PATH.join( __dirname, 'db', 'links' ) )
 
-            PATH.join( __dirname, 'db', 'links', 'data' )
-        ]
+        FILES.mkdir( PATH.join( __dirname, 'db', 'links', 'collections' ) )
 
-        // make sure required directories are available
-        for ( var i = 0, l = REQUIRED_DIRS.length; i < l; ++i )
-        {
-            if ( !FS.existsSync( REQUIRED_DIRS[ i ] ) )
-            {
-                // path does not exist, create directory
-                // should we change mode? default is 0777 (evil)
-                FS.mkdirSync( REQUIRED_DIRS[ i ] )
-            }
-        }
+        FILES.mkdir( PATH.join( __dirname, 'db', 'links', 'data' ) )
 
         // WARNING WARNING WARNING!!!!!
         // deleting or changing .nbkey file will

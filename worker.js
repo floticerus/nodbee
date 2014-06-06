@@ -19,10 +19,10 @@
         // require index from lib directory
         // var LIB = require( PATH.join( __dirname, 'lib' ) )
 
-        var Collection = require( PATH.join( __dirname, 'lib', 'Collection' ) )
+        var Collection = require( PATH.join( __dirname, 'lib', 'constructors', 'Collection' ) )
 
         // reference Socket class
-        var Socket = require( PATH.join( __dirname, 'lib', 'Socket' ) )
+        var Socket = require( PATH.join( __dirname, 'lib', 'constructors', 'Socket' ) )
 
         // default port is 2324 - can overwrite with command line
         var PORT = 2324
@@ -47,6 +47,8 @@
                 new Socket( socket )
             }
         )
+
+        console.log( process.env.NBKEY )
 
         // bind server to port
         server.listen( PORT, function ()

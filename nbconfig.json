@@ -1,5 +1,5 @@
 {
-	"file_encryption": "aes-192-cbc",
+    "file_encryption": "aes-192-cbc",
 
-	"remote_access": false
+    "remote_access": false
 }

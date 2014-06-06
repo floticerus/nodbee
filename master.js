@@ -25,7 +25,15 @@
         
         var NUM_CPUS = OS.cpus().length || 1
 
+        var NBCONFIG = require( PATH.join( __dirname, 'nbconfig' ) )
+
         var Uid = require( PATH.join( __dirname, 'lib', 'constructors', 'Uid' ) )
+
+        MESSAGES.on( 'test', function ( obj )
+            {
+                console.log( obj )
+            } 
+        )
 
         function forkWorker( data )
         {
@@ -90,8 +98,12 @@
                 // sets in process.env
                 var workerData = {
                     // process.env.NBKEY
-                    'NBKEY': KEY
+                    'NBKEY': KEY,
+
+                    'NBCONFIG': JSON.stringify( NBCONFIG )
                 }
+
+                // console.log( JSON.stringify( NBCONFIG ) )
 
                 // lock at 2 threads for now
                 for ( var i = 0; i < 2; ++i )

@@ -56,8 +56,6 @@
                 {
                     var col = new Collection( 'testcollection' )
 
-                    var col2 = new Collection( 'something' )
-
                     // console.log( col )
                 }
             )

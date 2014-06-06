@@ -25,11 +25,13 @@
 
         var NBCONFIG = require( PATH.join( __dirname, 'nbconfig' ) )
 
+        var MESSAGES = require( PATH.join( __dirname, 'lib', 'messages' ) )
+
         var Uid = require( PATH.join( __dirname, 'lib', 'constructors', 'Uid' ) )
 
         // WARNING WARNING WARNING!!!!!
-        // deleting or changing this file will make the
-        // database unreadable, and unrecoverable
+        // deleting or changing .nbkey file will
+        // make the database unreadable
 
         // check for .nbkey file
         // if it doesn't exist, create it
@@ -39,13 +41,10 @@
         }
 
         var KEY = FS.readFileSync( KEY_DIR, { 'encoding': 'binary' } ).toString().trim()
-        
-        // console.log( KEY )
 
         // extra data to send to worker
         // sets in process.env
         var workerData = {
-            // process.env.NBKEY
             'NBKEY': KEY,
 
             'NBCONFIG': JSON.stringify( NBCONFIG )
@@ -57,7 +56,7 @@
             process.env[ key ] = workerData[ key ]
         }
 
-        var MESSAGES = require( PATH.join( __dirname, 'lib', 'messages' ) )
+        // load modules that require nodebee things from process.env here
 
         var Collection = require( PATH.join( __dirname, 'lib', 'constructors', 'Collection' ) )
 
@@ -95,51 +94,10 @@
                 )
         }
 
-        // console.log( JSON.stringify( NBCONFIG ) )
-
         // lock at 2 threads for now
         for ( var i = 0; i < 2; ++i )
         {
             forkWorker( workerData )
         }
-
-        // read key from .nbkey file
-        /* FS.readFile( KEY_DIR,
-            {
-                'encoding': 'binary'
-            },
-            function ( err, data )
-            {
-                // make sure data is set
-                data = data || ''
-
-                // make sure data is a string,
-                // and remove extra whitespace
-                var KEY = data.toString().trim()
-
-                // extra data to send to worker
-                // sets in process.env
-                var workerData = {
-                    // process.env.NBKEY
-                    'NBKEY': KEY,
-
-                    'NBCONFIG': JSON.stringify( NBCONFIG )
-                }
-
-                // set for master, too
-                for ( var key in workerData )
-                {
-                    process.env[ key ] = workerData[ key ]
-                }
-
-                // console.log( JSON.stringify( NBCONFIG ) )
-
-                // lock at 2 threads for now
-                for ( var i = 0; i < 2; ++i )
-                {
-                    forkWorker( workerData )
-                }
-            }
-        ) */
     }
 )()

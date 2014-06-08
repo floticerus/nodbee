@@ -3,7 +3,7 @@
 
     "file_encryption_algorithm": "aes-192-cbc",
 
-    "max_crypt_processes": 50,
+    "max_crypt_processes": 4,
 
     "num_workers": 2,
 

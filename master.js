@@ -14,11 +14,17 @@
             return
         }
         
+        var PATH = require( 'path' )
+
+        CLUSTER.setupMaster(
+            {
+                exec: PATH.join( __dirname, 'worker.js' )
+            }
+        )
+
         var OS = require( 'os' )
 
         var FS = require( 'fs' )
-
-        var PATH = require( 'path' )
 
         var KEY_DIR = PATH.join( __dirname, '.nbkey' )
         
@@ -78,6 +84,8 @@
         FILES.mkdir( PATH.join( __dirname, 'db', 'keys', 'collections' ) )
 
         FILES.mkdir( PATH.join( __dirname, 'db', 'keys', 'data' ) )
+
+        FILES.mkdir( PATH.join( __dirname, 'users' ) )
 
         function forkWorker( data )
         {

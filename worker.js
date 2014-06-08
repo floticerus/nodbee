@@ -16,6 +16,8 @@
         // load net module for tcp server
         var NET = require( 'net' )
 
+        var NBCONFIG = JSON.parse( process.env.NBCONFIG )
+
         // require index from lib directory
         // var LIB = require( PATH.join( __dirname, 'lib' ) )
 
@@ -26,49 +28,52 @@
         // reference Socket class
         var Socket = require( PATH.join( __dirname, 'lib', 'constructors', 'Socket' ) )
 
-        // default port is 2324 - can overwrite with command line
-        var PORT = 2324
-
-        // set custom port from command line
-        if ( process.argv.length > 2 )
-        {
-            // use the first argument
-            PORT = process.argv[ 2 ]
-        }
-
-        // create tcp server
-        var server = NET.createServer(
-            {
-                allowHalfOpen: true
-            }
-        )
-
-        // listen for connections
-        server.on( 'connection', function ( socket )
-            {
-                new Socket( socket )
-            }
-        )
-
         MESSAGES
             // wait for connection with message system
-            .on( 'listening', function ()
+            .on( 'connected', function ()
                 {
                     var col = new Collection( 'testcollection' )
 
-                    // console.log( col )
+                    
+
+                    console.log( col )
                 }
             )
 
-        // bind server to port
-        server.listen( PORT, function ()
-            {
-                MESSAGES.emit( 'listening' )
+        if ( NBCONFIG.tcp_server.enabled === true )
+        {
+            // default port is 2324 - can overwrite with command line
+            var PORT = NBCONFIG.tcp_server.port || 2324
 
-                // server is bound
-                console.log( 'nodebee worker listening on port ' + PORT )
+            // set custom port from command line
+            if ( process.argv.length > 2 )
+            {
+                // use the first argument
+                PORT = process.argv[ 2 ]
             }
-        )
+
+            // create tcp server
+            var server = NET.createServer(
+                {
+                    allowHalfOpen: true
+                }
+            )
+
+            // listen for connections
+            server.on( 'connection', function ( socket )
+                {
+                    new Socket( socket )
+                }
+            )
+
+            // bind server to port
+            server.listen( PORT, function ()
+                {
+                    // server is bound
+                    console.log( 'nodebee worker listening on port ' + PORT )
+                }
+            )
+        }
         
         /* process.on( 'uncaughtException', function ( msg, data )
             {

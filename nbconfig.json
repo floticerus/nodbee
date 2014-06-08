@@ -1,7 +1,13 @@
 {
     "digest_algorithm": "rmd160",
-    
+
     "file_encryption_algorithm": "aes-192-cbc",
 
-    "remote_access": false
+    "remote_access": false,
+
+    "tcp_server": {
+        "enabled": true,
+        
+        "port": 2324
+    }
 }

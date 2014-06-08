@@ -36,10 +36,10 @@
 
                     //console.log( col )
 
-                    //for ( var i = 0; i < 100; ++i )
-                    //{
-                    //    new Collection( 'fwjekhfwe8fhweu' )
-                    //}
+                    for ( var i = 0; i < 100; ++i )
+                    {
+                        new Collection( 'fwjekhfwe8fhweu' )
+                    }
                 }
             )
 

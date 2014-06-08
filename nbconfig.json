@@ -5,7 +5,7 @@
 
     "max_crypt_processes": 50,
 
-    "num_workers": "auto",
+    "num_workers": 2,
 
     "port": 2324,
 

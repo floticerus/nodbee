@@ -45,7 +45,7 @@
         // if it doesn't exist, create it
         if ( !FS.existsSync( KEY_DIR ) )
         {
-            FS.writeFileSync( KEY_DIR, Uid.gen( 256 ) + '\r\n', 'binary' )
+            FS.writeFileSync( KEY_DIR, Uid.gen( 256 ) + '\r\n', { 'encoding': 'binary', 'mode': 0400 } )
         }
 
         var KEY = FS.readFileSync( KEY_DIR, { 'encoding': 'binary' } ).toString().trim()
@@ -76,12 +76,6 @@
         FILES.mkdir( PATH.join( __dirname, 'db', 'collections' ) )
 
         FILES.mkdir( PATH.join( __dirname, 'db', 'data' ) )
-
-        FILES.mkdir( PATH.join( __dirname, 'db', 'keys' ) )
-
-        FILES.mkdir( PATH.join( __dirname, 'db', 'keys', 'collections' ) )
-
-        FILES.mkdir( PATH.join( __dirname, 'db', 'keys', 'data' ) )
 
         FILES.mkdir( PATH.join( __dirname, 'users' ) )
 
@@ -132,7 +126,6 @@
             NUM_WORKERS = parseInt( NBCONFIG.num_workers )
         }
 
-        // lock at 2 threads for now
         for ( var i = 0; i < NUM_WORKERS; ++i )
         {
             forkWorker( workerData )

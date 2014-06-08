@@ -26,7 +26,15 @@
 
         var FS = require( 'fs' )
 
-        var KEY_DIR = PATH.join( __dirname, '.nbkey' )
+        var SPAWN = require( 'child_process' ).spawn
+
+        var KEY_PEM = PATH.join( __dirname, '.ssl', 'nb-key.pem' )
+
+        var CSR_PEM = PATH.join( __dirname, '.ssl', 'nb-csr.pem' )
+
+        var CERT_PEM = PATH.join( __dirname, '.ssl', 'nb-cert.pem' )
+
+        var KEY_PATH = PATH.join( __dirname, '.nbkey' )
 
         var NBCONFIG = require( PATH.join( __dirname, 'nbconfig' ) )
 
@@ -43,23 +51,15 @@
 
         // check for .nbkey file
         // if it doesn't exist, create it
-        if ( !FS.existsSync( KEY_DIR ) )
+        if ( !FS.existsSync( KEY_PATH ) )
         {
-            FS.writeFileSync( KEY_DIR, Uid.gen( 256 ) + '\r\n', { 'encoding': 'binary', 'mode': 0400 } )
+            FS.writeFileSync( KEY_PATH, Uid.gen( 256 ) + '\r\n', { 'encoding': 'binary', 'mode': 0400 } )
         }
 
-        var KEY = FS.readFileSync( KEY_DIR, { 'encoding': 'binary' } ).toString().trim()
+        var KEY = FS.readFileSync( KEY_PATH, { 'encoding': 'binary' } ).toString().trim()
 
         // set NBKEY for master
         process.env[ 'NBKEY' ] = KEY
-
-        // extra data to send to worker
-        // sets in process.env
-        var workerData = {
-            'NBKEY': KEY,
-
-            'NBCONFIG': NBCONFIG_STRING
-        }
 
         // load modules that might require nodebee things from process.env here
 
@@ -67,9 +67,13 @@
 
         var FILES = require( PATH.join( __dirname, 'lib', 'files' ) )
 
+        var Queue = require( PATH.join( __dirname, 'lib', 'constructors', 'Queue' ) )
+
         var Collection = require( PATH.join( __dirname, 'lib', 'constructors', 'Collection' ) )
 
         // make sure these directories exist before continuing
+
+        FILES.mkdir( PATH.join( __dirname, '.ssl' ) )
 
         FILES.mkdir( PATH.join( __dirname, 'db' ) )
 
@@ -113,6 +117,14 @@
                 )
         }
 
+        // extra data to send to worker
+        // sets in process.env
+        var WORKER_DATA = {
+            'NBKEY': KEY,
+
+            'NBCONFIG': NBCONFIG_STRING
+        }
+
         var NUM_CPUS = OS.cpus().length || 1
 
         var NUM_WORKERS = 1
@@ -126,9 +138,86 @@
             NUM_WORKERS = parseInt( NBCONFIG.num_workers )
         }
 
-        for ( var i = 0; i < NUM_WORKERS; ++i )
+        function forkWorkers()
         {
-            forkWorker( workerData )
+            for ( var i = 0; i < NUM_WORKERS; ++i )
+            {
+                forkWorker( WORKER_DATA )
+            }
+        }
+
+        // check if we should use ssl
+        if ( NBCONFIG.ssl_enabled )
+        {
+            // ssl enabled, check for nb-key.pem and nb.cert.pem
+            // auto-generate if they do not exist
+
+            // use queue to process async functions in order
+            // limit queue to 1 process at a time
+            var queue = new Queue( 1 )
+
+            queue.add( function ( next )
+                {
+                    if ( FS.existsSync( KEY_PEM ) )
+                    {
+                        return next()
+                    }
+
+                    var child = SPAWN( 'openssl', [ 'genrsa', '-out', KEY_PEM, '4096' ], { stdio: 'inherit' } )
+
+                    child.on( 'close', function ()
+                        {
+                            next()
+                        }
+                    )
+                }
+            )
+
+            queue.add( function ( next )
+                {
+                    // check for CERT_PEM too in case CSR_PEM has been removed
+                    if ( FS.existsSync( CSR_PEM ) || FS.existsSync( CERT_PEM ) )
+                    {
+                        return next()
+                    }
+
+                    var child = SPAWN( 'openssl', [ 'req', '-new', '-key', KEY_PEM, '-out', CSR_PEM, '-subj', '/C=US/ST=Illinois/L=Chicago/O=Database/OU=NA/CN=nodebee' ], { stdio: 'inherit' } )
+
+                    child.on( 'close', function ()
+                        {
+                            next()
+                        }
+                    )
+                }
+            )
+
+            queue.add( function ( next )
+                {
+                    if ( FS.existsSync( CERT_PEM ) )
+                    {
+                        return next()
+                    }
+
+                    var child = SPAWN( 'openssl', [ 'x509', '-req', '-in', CSR_PEM, '-signkey', KEY_PEM, '-out', CERT_PEM ], { stdio: 'inherit' } )
+
+                    child.on( 'close', function ()
+                        {
+                            // remove CSR_PEM, use async unlink
+                            FS.unlink( CSR_PEM, function ()
+                                {
+                                    next()
+                                }
+                            )
+                        }
+                    )
+                }
+            )
+
+            queue.add( forkWorkers )
+        }
+        else
+        {
+            forkWorkers()
         }
     }
 )()

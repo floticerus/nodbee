@@ -11,15 +11,15 @@
             return
         }
         
-        var PATH = require( 'path' )
+        var FS = require( 'fs' )
 
-        // load net module for tcp server
-        var NET = require( 'net' )
+        var PATH = require( 'path' )
 
         var NBCONFIG = JSON.parse( process.env.NBCONFIG )
 
-        // require index from lib directory
-        // var LIB = require( PATH.join( __dirname, 'lib' ) )
+        var KEY_PEM = PATH.join( __dirname, '.ssl', 'nb-key.pem' )
+
+        var CERT_PEM = PATH.join( __dirname, '.ssl', 'nb-cert.pem' )
 
         var MESSAGES = require( PATH.join( __dirname, 'lib', 'messages' ) )
 
@@ -36,10 +36,10 @@
 
                     //console.log( col )
 
-                    //for ( var i = 0; i < 100; ++i )
-                    //{
-                    //    new Collection( 'fwjekhfwe8fhweu' )
-                    //}
+                    for ( var i = 0; i < 100; ++i )
+                    {
+                        new Collection( 'fwjekhfwe8fhweu' )
+                    }
                 }
             )
 
@@ -53,12 +53,29 @@
             PORT = process.argv[ 2 ]
         }
 
-        // create tcp server
-        var server = NET.createServer(
-            {
+        var SERVER, SERVER_OPTS
+
+        if ( NBCONFIG.ssl_enabled )
+        {
+            SERVER = require( 'tls' )
+
+            SERVER_OPTS = {
+                key: FS.readFileSync( KEY_PEM ),
+
+                cert: FS.readFileSync( CERT_PEM )
+            }
+        }
+        else
+        {
+            SERVER = require( 'net' )
+
+            SERVER_OPTS = {
                 allowHalfOpen: true
             }
-        )
+        }
+
+        // create server
+        var server = SERVER.createServer( SERVER_OPTS )
 
         // listen for connections
         server.on( 'connection', function ( socket )

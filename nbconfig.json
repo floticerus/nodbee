@@ -1,7 +1,9 @@
 {
-    "digest_algorithm": "rmd160",
+    "file_async": true,
 
     "file_encryption_algorithm": "aes-192-cbc",
+
+    "hash_algorithm": "sha256",
 
     "max_crypt_processes": 50,
 
@@ -9,5 +11,7 @@
 
     "port": 2324,
 
-    "remote_access": false
+    "remote_access": false,
+
+    "ssl_enabled": true
 }

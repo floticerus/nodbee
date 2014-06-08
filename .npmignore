@@ -1,7 +1,4 @@
 node_modules
-db/data/*
-db/collections/*
-db/links/data/*
-db/links/collections/*
+db
 test
 .nbkey

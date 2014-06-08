@@ -1,5 +1,5 @@
 {
-    "file_async": true,
+    "file_compression": true,
 
     "file_encryption_algorithm": "aes-192-cbc",
 
@@ -7,11 +7,13 @@
 
     "max_crypt_processes": 50,
 
-    "num_workers": 2,
+    "num_workers": 1,
 
     "port": 2324,
 
     "remote_access": false,
 
-    "ssl_enabled": true
+    "ssl_enabled": true,
+
+    "write_async": true
 }

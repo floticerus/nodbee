@@ -5,6 +5,8 @@
 
     "max_crypt_processes": 50,
 
+    "num_workers": "auto",
+
     "port": 2324,
 
     "remote_access": false

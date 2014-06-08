@@ -27,8 +27,6 @@
         var FS = require( 'fs' )
 
         var KEY_DIR = PATH.join( __dirname, '.nbkey' )
-        
-        var NUM_CPUS = OS.cpus().length || 1
 
         var NBCONFIG = require( PATH.join( __dirname, 'nbconfig' ) )
 
@@ -121,8 +119,21 @@
                 )
         }
 
+        var NUM_CPUS = OS.cpus().length || 1
+
+        var NUM_WORKERS = 1
+
+        if ( NBCONFIG.num_workers === 'auto' )
+        {
+            NUM_WORKERS = NUM_CPUS
+        }
+        else if ( typeof NBCONFIG.num_workers !== 'undefined' )
+        {
+            NUM_WORKERS = parseInt( NBCONFIG.num_workers )
+        }
+
         // lock at 2 threads for now
-        for ( var i = 0; i < 2; ++i )
+        for ( var i = 0; i < NUM_WORKERS; ++i )
         {
             forkWorker( workerData )
         }

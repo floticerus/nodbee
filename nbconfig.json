@@ -1,5 +1,7 @@
 {
-    "file_encryption": "aes-192-cbc",
+    "digest_algorithm": "rmd160",
+    
+    "file_encryption_algorithm": "aes-192-cbc",
 
     "remote_access": false
 }

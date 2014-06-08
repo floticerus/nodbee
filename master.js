@@ -26,25 +26,12 @@
 
         var NBCONFIG = require( PATH.join( __dirname, 'nbconfig' ) )
 
-        var MESSAGES = require( PATH.join( __dirname, 'lib', 'messages' ) )
+        var NBCONFIG_STRING = JSON.stringify( NBCONFIG )
 
-        var FILES = require( PATH.join( __dirname, 'lib', 'files' ) )
+        process.env[ 'NBCONFIG' ] = NBCONFIG_STRING
 
+        // need Uid constructor for .nbkey creation
         var Uid = require( PATH.join( __dirname, 'lib', 'constructors', 'Uid' ) )
-
-        // make sure these directories exist before continuing
-
-        FILES.mkdir( PATH.join( __dirname, 'db' ) )
-
-        FILES.mkdir( PATH.join( __dirname, 'db', 'collections' ) )
-
-        FILES.mkdir( PATH.join( __dirname, 'db', 'data' ) )
-
-        FILES.mkdir( PATH.join( __dirname, 'db', 'links' ) )
-
-        FILES.mkdir( PATH.join( __dirname, 'db', 'links', 'collections' ) )
-
-        FILES.mkdir( PATH.join( __dirname, 'db', 'links', 'data' ) )
 
         // WARNING WARNING WARNING!!!!!
         // deleting or changing .nbkey file will
@@ -59,23 +46,38 @@
 
         var KEY = FS.readFileSync( KEY_DIR, { 'encoding': 'binary' } ).toString().trim()
 
+        // set NBKEY for master
+        process.env[ 'NBKEY' ] = KEY
+
         // extra data to send to worker
         // sets in process.env
         var workerData = {
             'NBKEY': KEY,
 
-            'NBCONFIG': JSON.stringify( NBCONFIG )
+            'NBCONFIG': NBCONFIG_STRING
         }
 
-        // set process.env for master, too
-        for ( var key in workerData )
-        {
-            process.env[ key ] = workerData[ key ]
-        }
+        // load modules that might require nodebee things from process.env here
 
-        // load modules that require nodebee things from process.env here
+        var MESSAGES = require( PATH.join( __dirname, 'lib', 'messages' ) )
+
+        var FILES = require( PATH.join( __dirname, 'lib', 'files' ) )
 
         var Collection = require( PATH.join( __dirname, 'lib', 'constructors', 'Collection' ) )
+
+        // make sure these directories exist before continuing
+
+        FILES.mkdir( PATH.join( __dirname, 'db' ) )
+
+        FILES.mkdir( PATH.join( __dirname, 'db', 'collections' ) )
+
+        FILES.mkdir( PATH.join( __dirname, 'db', 'data' ) )
+
+        FILES.mkdir( PATH.join( __dirname, 'db', 'keys' ) )
+
+        FILES.mkdir( PATH.join( __dirname, 'db', 'keys', 'collections' ) )
+
+        FILES.mkdir( PATH.join( __dirname, 'db', 'keys', 'data' ) )
 
         function forkWorker( data )
         {

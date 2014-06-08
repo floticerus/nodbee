@@ -5,8 +5,8 @@
  *  default port is 2324
  */
 ( function ()
-	{
-		// load master or worker module
-		require( require( 'path' ).join( __dirname, require( 'cluster' ).isMaster ? 'master' : 'worker' ) )
-	}
+    {
+        // load master or worker module
+        require( require( 'path' ).join( __dirname, require( 'cluster' ).isMaster ? 'master' : 'worker' ) )
+    }
 )()

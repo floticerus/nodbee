@@ -32,11 +32,14 @@
             // wait for connection with message system
             .on( 'connected', function ()
                 {
-                    var col = new Collection( 'testcollection' )
+                    //var col = new Collection( 'testcollection' )
 
-                    
+                    //console.log( col )
 
-                    console.log( col )
+                    //for ( var i = 0; i < 100; ++i )
+                    //{
+                    //    new Collection( 'fwjekhfwe8fhweu' )
+                    //}
                 }
             )
 

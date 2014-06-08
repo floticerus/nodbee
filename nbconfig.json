@@ -3,7 +3,9 @@
 
     "file_encryption_algorithm": "aes-192-cbc",
 
-    "remote_access": false,
+    "max_crypt_processes": 50,
 
-    "port": 2324
+    "port": 2324,
+
+    "remote_access": false
 }

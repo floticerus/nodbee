@@ -85,7 +85,7 @@
 
         FILES.mkdir( PATH.join( __dirname, 'users' ) )
 
-        COMPRESSION.compress( PATH.join( __dirname, 'db', 'collections' ) )
+        // COMPRESSION.compress( PATH.join( __dirname, 'db', 'collections' ) )
 
         function forkWorker( data )
         {
@@ -217,7 +217,7 @@
                 }
             )
 
-            queue.add( forkWorkers )
+            queue.done( forkWorkers )
         }
         else
         {

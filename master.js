@@ -218,7 +218,7 @@
 
             FILES.mkdir( sslPath )
 
-            GENSSL.generate(
+            GENSSL(
                 {
                     'destination': sslPath,
 

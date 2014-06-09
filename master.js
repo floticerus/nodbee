@@ -36,7 +36,18 @@
 
         var KEY_PATH = PATH.join( __dirname, '.nbkey' )
 
-        var NBCONFIG = require( PATH.join( __dirname, 'nbconfig' ) )
+        var NBCONFIG_DEFAULT = require( PATH.join( __dirname, 'nbconfig.default' ) )
+
+        var NBCONFIG_PATH = PATH.join( __dirname, 'nbconfig.json' )
+
+        // look for nbconfig
+        if ( !FS.existsSync( NBCONFIG_PATH ) )
+        {
+            // no nbconfig.json file, copy from nbconfig.default.json
+            FS.writeFileSync( NBCONFIG_PATH, JSON.stringify( NBCONFIG_DEFAULT, null, 4 ) + '\r\n' )
+        }
+
+        var NBCONFIG = require( NBCONFIG_PATH )
 
         var NBCONFIG_STRING = JSON.stringify( NBCONFIG )
 

@@ -36,7 +36,7 @@
 
         var KEY_PATH = PATH.join( __dirname, '.nbkey' )
 
-        var NBCONFIG_DEFAULT = require( PATH.join( __dirname, 'nbconfig.default' ) )
+        var NBCONFIG_DEFAULT = require( PATH.join( __dirname, 'nbconfig.default.json' ) )
 
         var NBCONFIG_PATH = PATH.join( __dirname, 'nbconfig.json' )
 
@@ -48,6 +48,29 @@
         }
 
         var NBCONFIG = require( NBCONFIG_PATH )
+
+        // look for new defaults
+        ;( function ()
+            {
+                var newKeys = false
+
+                for ( var key in NBCONFIG_DEFAULT )
+                {
+                    if ( !NBCONFIG.hasOwnProperty( key ) )
+                    {
+                        newKeys = true
+
+                        NBCONFIG[ key ] = NBCONFIG_DEFAULT[ key ]
+                    }
+                }
+
+                if ( newKeys )
+                {
+                    // write new file
+                    FS.writeFileSync( NBCONFIG_PATH, JSON.stringify( NBCONFIG, null, 4 ) ) + '\r\n'
+                }
+            }
+        )()
 
         var NBCONFIG_STRING = JSON.stringify( NBCONFIG )
 
@@ -96,11 +119,15 @@
 
         FILES.mkdir( PATH.join( __dirname, 'db', 'collections', 'data' ) )
 
+        FILES.mkdir( PATH.join( __dirname, 'db', 'collections', 'staging' ) )
+
         FILES.mkdir( PATH.join( __dirname, 'db', 'collections', 'tmp' ) )
 
         FILES.mkdir( PATH.join( __dirname, 'db', 'data' ) )
 
         FILES.mkdir( PATH.join( __dirname, 'db', 'data', 'data' ) )
+
+        FILES.mkdir( PATH.join( __dirname, 'db', 'data', 'staging' ) )
 
         FILES.mkdir( PATH.join( __dirname, 'db', 'data', 'tmp' ) )
 

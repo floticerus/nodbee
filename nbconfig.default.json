@@ -7,6 +7,8 @@
 
     "max_crypt_processes": 50,
 
+    "max_files_open": 100,
+
     "num_workers": "auto",
 
     "port": 2324,

@@ -67,6 +67,8 @@
 
         var FILES = require( PATH.join( __dirname, 'lib', 'files' ) )
 
+        var COMPRESSION = require( PATH.join( __dirname, 'lib', 'compression' ) )
+
         var Queue = require( PATH.join( __dirname, 'lib', 'constructors', 'Queue' ) )
 
         var Collection = require( PATH.join( __dirname, 'lib', 'constructors', 'Collection' ) )
@@ -82,6 +84,8 @@
         FILES.mkdir( PATH.join( __dirname, 'db', 'data' ) )
 
         FILES.mkdir( PATH.join( __dirname, 'users' ) )
+
+        COMPRESSION.compress( PATH.join( __dirname, 'db', 'collections' ) )
 
         function forkWorker( data )
         {

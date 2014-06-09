@@ -2,5 +2,6 @@ node_modules
 db
 users
 nbconfig.json
+npm-debug.log
 .ssl
 .nbkey

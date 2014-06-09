@@ -3,5 +3,6 @@ db
 users
 test
 nbconfig.json
+npm-debug.log
 .ssl
 .nbkey

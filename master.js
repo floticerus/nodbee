@@ -80,6 +80,8 @@
 
         var COMPRESSION = require( PATH.join( __dirname, 'lib', 'compression' ) )
 
+        var CRYPT = require( PATH.join( __dirname, 'lib', 'crypt' ) )
+
         var Queue = require( PATH.join( __dirname, 'lib', 'constructors', 'Queue' ) )
 
         var Collection = require( PATH.join( __dirname, 'lib', 'constructors', 'Collection' ) )
@@ -92,11 +94,40 @@
 
         FILES.mkdir( PATH.join( __dirname, 'db', 'collections' ) )
 
+        FILES.mkdir( PATH.join( __dirname, 'db', 'collections', 'data' ) )
+
+        FILES.mkdir( PATH.join( __dirname, 'db', 'collections', 'tmp' ) )
+
         FILES.mkdir( PATH.join( __dirname, 'db', 'data' ) )
+
+        FILES.mkdir( PATH.join( __dirname, 'db', 'data', 'data' ) )
+
+        FILES.mkdir( PATH.join( __dirname, 'db', 'data', 'tmp' ) )
 
         FILES.mkdir( PATH.join( __dirname, 'users' ) )
 
-        // COMPRESSION.compress( PATH.join( __dirname, 'db', 'collections' ) )
+        /* CRYPT.encryptFile( PATH.join( __dirname, 'db', 'collections', 'tmp', 'archive.json.gz' ), function ( success )
+            {
+                if ( !success )
+                {
+                    // encryption failed
+                    return
+                }
+
+                FS.unlink( PATH.join( __dirname, 'db', 'collections', 'tmp', 'archive.json.gz' ), function ( err )
+                    {
+                        if ( err )
+                        {
+                            console.log( err )
+                        }
+
+                        // old file removed
+                    }
+                )
+            }
+        ) */
+
+        //COMPRESSION.compress( PATH.join( __dirname, 'db', 'collections' ) )
 
         function forkWorker( data )
         {

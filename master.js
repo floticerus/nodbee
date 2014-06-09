@@ -97,7 +97,7 @@
 
         var CRYPT = require( PATH.join( __dirname, 'lib', 'crypt' ) )
 
-        var GENSSL = require( PATH.join( __dirname, 'lib', 'constructors', 'Genssl' ) )
+        var GENSSL = require( PATH.join( __dirname, 'lib', 'Genssl' ) )
 
         var Queue = require( PATH.join( __dirname, 'lib', 'constructors', 'Queue' ) )
 

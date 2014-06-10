@@ -103,7 +103,7 @@
 
         var Collection = require( PATH.join( __dirname, 'lib', 'constructors', 'Collection' ) )
 
-        var Proccecutor = require( PATH.join( __dirname, 'lib', 'constructors', 'Proccecutor' ) )
+        var Procecutor = require( PATH.join( __dirname, 'lib', 'constructors', 'Procecutor' ) )
 
         // make sure these directories exist before continuing
 
@@ -184,13 +184,11 @@
             }
         ) */
 
-        var proccecutor = new Proccecutor(
+        var procecutor = new Procecutor(
             {
                 path: PATH.join( __dirname, 'client.js' )
             }
         )
-
-        console.log( proccecutor.idleTime )
 
         function forkWorker( data )
         {

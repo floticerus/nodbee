@@ -103,6 +103,8 @@
 
         var Collection = require( PATH.join( __dirname, 'lib', 'constructors', 'Collection' ) )
 
+        var Proccecutor = require( PATH.join( __dirname, 'lib', 'constructors', 'Proccecutor' ) )
+
         // make sure these directories exist before continuing
 
         FILES.mkdir( PATH.join( __dirname, 'db' ) )
@@ -125,28 +127,70 @@
 
         FILES.mkdir( PATH.join( __dirname, 'users' ) )
 
-        /* CRYPT.encryptFile( PATH.join( __dirname, 'db', 'collections', 'tmp', 'archive.json.gz' ), function ( success )
+
+
+        // test compress & encrypt together
+
+        /* var COMPRESS_PATH = PATH.join( __dirname, 'db', 'collections', 'staging' )
+
+        COMPRESSION.compress( COMPRESS_PATH, function ( err )
             {
-                if ( !success )
+                if ( err )
                 {
-                    // encryption failed
-                    return
+                    return console.log( err )
                 }
 
-                FS.unlink( PATH.join( __dirname, 'db', 'collections', 'tmp', 'archive.json.gz' ), function ( err )
+                console.log( 'totally done with compression' )
+
+                var GZ_PATH = PATH.join( COMPRESS_PATH, '../', 'tmp', 'archive.json.gz' )
+
+                CRYPT.encryptFile( GZ_PATH, function ( success, uid )
                     {
-                        if ( err )
+                        if ( !success )
                         {
-                            console.log( err )
+                            // encryption failed
+                            return console.log( 'encryption failed' )
                         }
 
-                        // old file removed
+                        FS.unlink( GZ_PATH, function ( err )
+                            {
+                                if ( err )
+                                {
+                                    console.log( err )
+                                }
+
+                                var GZ_DIR = PATH.dirname( GZ_PATH )
+
+                                var UID_PATH = PATH.join( GZ_DIR, uid )
+
+                                var MOVE_PATH = PATH.join( GZ_DIR, '../', 'data', uid )
+
+                                // old file removed, move to data directory
+                                FS.rename( UID_PATH, MOVE_PATH, function ( err )
+                                    {
+                                        if ( err )
+                                        {
+                                            return console.log( err )
+                                        }
+
+                                        // file moved to data directory
+                                        console.log( 'finished encryption' )
+                                    }
+                                )
+                            }
+                        )
                     }
                 )
             }
         ) */
 
-        //COMPRESSION.compress( PATH.join( __dirname, 'db', 'collections' ) )
+        var proccecutor = new Proccecutor(
+            {
+                path: PATH.join( __dirname, 'client.js' )
+            }
+        )
+
+        console.log( proccecutor.idleTime )
 
         function forkWorker( data )
         {

@@ -1,4 +1,4 @@
-/** nodebee cluster worker
+/** nodbee cluster worker
  *  2014 kevin von flotow
  */
 ( function ()
@@ -88,7 +88,7 @@
         server.listen( PORT, function ()
             {
                 // server is bound
-                console.log( 'nodebee worker listening on port ' + PORT )
+                console.log( 'nodbee worker listening on port ' + PORT )
             }
         )
         

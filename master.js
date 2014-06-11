@@ -1,4 +1,4 @@
-/** nodebee cluster master
+/** nodbee cluster master
  *  2014 kevin von flotow
  *
  *  forks number of workers equal to number
@@ -87,7 +87,7 @@
         // set NBKEY for master
         process.env[ 'NBKEY' ] = KEY
 
-        // load modules that might require nodebee things from process.env here
+        // load modules that might require nodbee things from process.env here
 
         var MESSAGES = require( PATH.join( __dirname, 'lib', 'messages' ) )
 
@@ -190,7 +190,11 @@
 
                 min: 5,
 
-                max: 20
+                max: 20,
+
+                sleep: -1,
+
+                timeout: -1
             }
         )
 
@@ -285,7 +289,7 @@
 
                     'keyLength': 4096,
 
-                    'organization': 'nodebee',
+                    'organization': 'nodbee',
 
                     'organizationalUnit': 'database'
                 },

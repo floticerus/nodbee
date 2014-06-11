@@ -3,6 +3,14 @@
  */
  ( function ()
 	{
-		console.log( 'client' )
+		var PATH = require( 'path' )
+
+		var PROCECUTOR = require( PATH.join( __dirname, 'lib', 'Constructors', 'Procecutor' ) ).child
+
+		PROCECUTOR.on( 'test', function ( data, done )
+			{
+				done( null, 'result' )
+			}
+		)
 	}
 )()

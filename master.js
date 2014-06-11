@@ -99,7 +99,7 @@
 
         var GENSSL = require( PATH.join( __dirname, 'lib', 'genssl' ) )
 
-        var Queue = require( PATH.join( __dirname, 'lib', 'constructors', 'Queue' ) )
+        var Queue = require( 'nbqueue' )
 
         var Collection = require( PATH.join( __dirname, 'lib', 'constructors', 'Collection' ) )
 
@@ -186,7 +186,26 @@
 
         var procecutor = new Procecutor(
             {
-                path: PATH.join( __dirname, 'client.js' )
+                path: PATH.join( __dirname, 'client.js' ),
+
+                min: 5,
+
+                max: 20
+            }
+        )
+
+        procecutor.exec( 'test',
+            {
+                'test': 'data'
+            },
+            function ( err, data )
+            {
+                if ( err )
+                {
+                    return console.log( err )
+                }
+
+                console.log( data )
             }
         )
 

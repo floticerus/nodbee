@@ -184,7 +184,7 @@
             }
         ) */
 
-        var procecutor = new Procecutor(
+        /* var procecutor = new Procecutor(
             {
                 path: PATH.join( __dirname, 'client.js' ),
 
@@ -194,24 +194,29 @@
 
                 sleep: -1,
 
-                timeout: -1
+                timeout: 5000
             }
         )
 
-        procecutor.exec( 'test',
-            {
-                'test': 'data'
-            },
-            function ( err, data )
-            {
-                if ( err )
+        var tests = 100
+
+        while ( tests-- > 0 )
+        {
+            procecutor.exec( 'test',
                 {
-                    return console.log( err )
-                }
+                    'test': 'data'
+                },
+                function ( err, data )
+                {
+                    if ( err )
+                    {
+                        return console.log( err )
+                    }
 
-                console.log( data )
-            }
-        )
+                    console.log( data )
+                }
+            )
+        } */
 
         function forkWorker( data )
         {

@@ -9,7 +9,11 @@
 
 		PROCECUTOR.on( 'test', function ( data, done )
 			{
-				done( null, 'result' )
+				setTimeout( function ()
+					{
+						done( null, 'result' )
+					}, Math.random() * 3000
+				)
 			}
 		)
 	}

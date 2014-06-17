@@ -99,7 +99,9 @@
 
         var GENSSL = require( PATH.join( __dirname, 'lib', 'genssl' ) )
 
-        var Queue = require( 'nbqueue' )
+        var Queue = require( PATH.join( __dirname, 'lib', 'constructors', 'Queue' ) )
+
+        var DB = require( PATH.join( __dirname, 'lib', 'db' ) )
 
         var Collection = require( PATH.join( __dirname, 'lib', 'constructors', 'Collection' ) )
 
@@ -107,27 +109,35 @@
 
         // make sure these directories exist before continuing
 
-        FILES.mkdir( PATH.join( __dirname, 'db' ) )
+        FILES.mkdirSync( PATH.join( __dirname, 'db' ) )
 
-        FILES.mkdir( PATH.join( __dirname, 'db', 'collections' ) )
+        FILES.mkdirSync( PATH.join( __dirname, 'db', 'collections' ) )
 
-        FILES.mkdir( PATH.join( __dirname, 'db', 'collections', 'data' ) )
+        FILES.mkdirSync( PATH.join( __dirname, 'db', 'collections', 'data' ) )
 
-        FILES.mkdir( PATH.join( __dirname, 'db', 'collections', 'staging' ) )
+        FILES.mkdirSync( PATH.join( __dirname, 'db', 'collections', 'staging' ) )
 
-        FILES.mkdir( PATH.join( __dirname, 'db', 'collections', 'tmp' ) )
+        FILES.mkdirSync( PATH.join( __dirname, 'db', 'collections', 'tmp' ) )
 
-        FILES.mkdir( PATH.join( __dirname, 'db', 'data' ) )
+        FILES.mkdirSync( PATH.join( __dirname, 'db', 'data' ) )
 
-        FILES.mkdir( PATH.join( __dirname, 'db', 'data', 'data' ) )
+        FILES.mkdirSync( PATH.join( __dirname, 'db', 'data', 'data' ) )
 
-        FILES.mkdir( PATH.join( __dirname, 'db', 'data', 'staging' ) )
+        FILES.mkdirSync( PATH.join( __dirname, 'db', 'data', 'staging' ) )
 
-        FILES.mkdir( PATH.join( __dirname, 'db', 'data', 'tmp' ) )
+        FILES.mkdirSync( PATH.join( __dirname, 'db', 'data', 'tmp' ) )
 
-        FILES.mkdir( PATH.join( __dirname, 'users' ) )
+        FILES.mkdirSync( PATH.join( __dirname, 'users' ) )
 
+        /* FILES.exec( 'mkdir', [ 'rjwekfje', 777 ], function ( err )
+            {
+                console.log( err || 'success' )
+            }
+        ) */
 
+        // var col = new Collection( 'collection' )
+
+        //console.log( col )
 
         // test compress & encrypt together
 
@@ -194,7 +204,7 @@
 
                 sleep: -1,
 
-                timeout: 5000
+                timeout: 60
             }
         )
 
@@ -279,6 +289,15 @@
             {
                 forkWorker( WORKER_DATA )
             }
+
+            DB.ready( function ()
+                {
+                    for ( var i = 0; i < 1000; ++i )
+                    {
+                        new Collection( 'fwjekhfwe8fhweu' + i )
+                    }
+                }
+            )
         }
 
         // check if we should use ssl
@@ -286,7 +305,7 @@
         {
             var sslPath = PATH.join( __dirname, '.ssl' )
 
-            FILES.mkdir( sslPath )
+            FILES.mkdirSync( sslPath )
 
             GENSSL(
                 {

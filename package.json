@@ -26,11 +26,8 @@
   "bugs": {
     "url": "https://github.com/kvonflotow/nodbee/issues"
   },
+  
   "homepage": "https://github.com/kvonflotow/nodbee",
-
-  "dependencies": {
-    "nbqueue": "0.0.3"
-  },
 
   "engines": {
     "node": "0.10.x"
